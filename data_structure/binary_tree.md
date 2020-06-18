@@ -15,78 +15,72 @@
 
 #### 前序递归
 
-```go
-func preorderTraversal(root *TreeNode)  {
-    if root==nil{
-        return
-    }
-    // 先访问根再访问左右
-    fmt.Println(root.Val)
-    preorderTraversal(root.Left)
-    preorderTraversal(root.Right)
+```cpp
+/*二叉树的前序遍历递归算法*/
+void PreOrderTraverse(BiTree T)
+{
+    if(T==NULL)
+    return;
+    printf("%c", T->data);  /*显示结点数据，可以更改为其他对结点操作*/
+    PreOrderTraverse(T->lchild);    /*再先序遍历左子树*/
+    PreOrderTraverse(T->rchild);    /*最后先序遍历右子树*/
 }
 ```
 
 #### 前序非递归
 
-```go
+```cpp
 // V3：通过非递归遍历
-func preorderTraversal(root *TreeNode) []int {
+void preOrderTraverse2(TreeNode root)
     // 非递归
     if root == nil{
         return nil
     }
-    result:=make([]int,0)
-    stack:=make([]*TreeNode,0)
 
-    for root!=nil || len(stack)!=0{
-        for root !=nil{
-            // 前序遍历，所以先保存结果
-            result=append(result,root.Val)
-            stack=append(stack,root)
-            root=root.Left
-        }
-        // pop
-        node:=stack[len(stack)-1]
-        stack=stack[:len(stack)-1]
-        root=node.Right
+    Stack<TreeNode> stack = new Stack<>(); 
+    TreeNode pNode = root;
+
+    while (pNode != null || !stack.isEmpty()) {
+        if (pNode != null) {
+            // 前序遍历，所以先保存结果  
+            System.out.print(pNode.val+"  ");  
+            stack.push(pNode);  
+            pNode = pNode.left;  
+        } else { //pNode == null && !stack.isEmpty()  
+            TreeNode node = stack.pop();  
+            pNode = node.right;  
+        } 
     }
-    return result
 }
 ```
 
 #### 中序非递归
 
-```go
+```cpp
 // 思路：通过stack 保存已经访问的元素，用于原路返回
-func inorderTraversal(root *TreeNode) []int {
-    result := make([]int, 0)
-    if root == nil {
-        return result
-    }
-    stack := make([]*TreeNode, 0)
-    for len(stack) > 0 || root != nil {
-        for root != nil {
-            stack = append(stack, root)
-            root = root.Left // 一直向左
-        }
-        // 弹出
-        val := stack[len(stack)-1]
-        stack = stack[:len(stack)-1]
-        result = append(result, val.Val)
-        root = val.Right
-    }
-    return result
+void inOrderTraverse2(TreeNode root) {  
+    Stack<TreeNode> stack = new Stack<>();  
+    TreeNode pNode = root;  
+    while (pNode != null || !stack.isEmpty()) {  
+        if (pNode != null) {  
+            stack.push(pNode);  
+            pNode = pNode.left;  
+        } else { //pNode == null && !stack.isEmpty()  
+            TreeNode node = stack.pop();  
+            System.out.print(node.val+"  ");  
+            pNode = node.right;  
+        }  
+    }  
 }
 ```
 
 #### 后序非递归
 
-```go
-func postorderTraversal(root *TreeNode) []int {
+```cpp
+void postorderTraversal(TreeNode root) {
 	// 通过lastVisit标识右子节点是否已经弹出
-	if root == nil {
-		return nil
+	if(root == nil) {
+		return nil;
 	}
 	result := make([]int, 0)
 	stack := make([]*TreeNode, 0)
